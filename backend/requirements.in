@@ -1,0 +1,15 @@
+# API Server
+fastapi[all]
+uvicorn[standard]
+pydantic
+pydantic-settings
+
+# Database
+
+# Development
+pip-tools
+
+# Auth
+bcrypt
+passlib
+python-jose
