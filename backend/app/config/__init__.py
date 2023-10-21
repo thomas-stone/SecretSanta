@@ -17,7 +17,9 @@ class ServerSettings(BaseSettings):
     PORT: int = 8000
 
 class DatabaseSettings(BaseSettings):
-    pass
+    DB_HOST: str = "http://dynamodb:8000" ### temp
+    ENVIRONMENT: str = "test"
+    AWS_REGION: str = "eu-west-1"
 
 class Settings(CommonSettings, AuthSettings, ServerSettings, DatabaseSettings):
     pass

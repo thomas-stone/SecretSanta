@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 
 from config import settings
+from routes.auth_router import auth_router
+from routes.user_router import user_router
 
 app = FastAPI()
 
@@ -35,6 +37,9 @@ def custom_openapi():
 @app.get("/", tags=["ping"])
 def ping():
     return {"message:": f"Server is working, go to http://{settings.HOST}:{settings.PORT}/docs for api docs"}
+
+app.include_router(auth_router, prefix=settings.API_V1_STR+"/auth", tags=["auth"])
+app.include_router(user_router, prefix=settings.API_V1_STR+"/user", tags=["user"])
 
 app.openapi = custom_openapi
 
