@@ -1,5 +1,6 @@
 import './App.css';
 import { useState } from 'react';
+import GetButton from './components/GetButton';
 
 function App() {
   const [number, setNumber] = useState(0);
@@ -9,11 +10,11 @@ function App() {
       <header className="App-header">
 
         <h2>THE AMAZING COUNTER</h2>
-
+        
         <p>{number}</p>
 
       <div>
-        <button> Test API GET</button>
+        <GetButton name={"TEST BUTTON"} urlPath={`/user/${}`}></GetButton>
         <button> Test API POST</button>
         <button> Test API</button>
       </div>
@@ -28,7 +29,6 @@ function App() {
     </div>
   );
 }
-
 
 
 

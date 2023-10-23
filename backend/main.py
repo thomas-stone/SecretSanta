@@ -1,14 +1,24 @@
-# Import the required packages
-from flask import Flask
-
-# Create an application instance
-app = Flask(__name__)
-
-# Define a route to fetch the available articles
-@app.route("/testing", methods=["GET"], strict_slashes=False)
-def test_route():
-    return {"Hello": "World"}
+from fastapi import FastAPI
+app = FastAPI()
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
+
+@app.get("/user/{username}")
+async def get_user(username):
+    return {"message": f"Hello {username}"}
+
+
+@app.post("/user/{username}")
+async def root(username):
+    return {"message": f"POSTING {username}"}
+
+
+@app.get("/idk")
+async def root():
+    return {"message": "Hello World"}
+
+
