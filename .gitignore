@@ -24,3 +24,8 @@ yarn-error.log*
 
 *.lock
 *.env
+
+package/
+build/
+node_modules/
+*.zip

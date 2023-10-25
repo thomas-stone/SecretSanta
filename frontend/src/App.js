@@ -1,8 +1,11 @@
 import './App.css';
 import { useState } from 'react';
+import GetButton from './components/GetButton';
+import InputField from './components/InputField';
 
 function App() {
   const [number, setNumber] = useState(0);
+  const [name, setState] = useState("");
 
   return (
     <div className="App">
@@ -10,12 +13,14 @@ function App() {
 
         <h2>THE AMAZING COUNTER</h2>
 
+        <div>
+          <InputField state={name} setState={setState}></InputField>
+        </div>
+        
         <p>{number}</p>
 
       <div>
-        <button> Test API GET</button>
-        <button> Test API POST</button>
-        <button> Test API</button>
+        <GetButton name={`GET /users/${name}`} urlPath={`/user/${name}`}></GetButton>
       </div>
 
       <div>
@@ -28,7 +33,6 @@ function App() {
     </div>
   );
 }
-
 
 
 
