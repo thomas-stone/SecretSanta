@@ -5,6 +5,12 @@ class UserLogin(BaseModel):
     email: str
     password: str
 
+class UserCreate(BaseModel):
+    email: str
+    password: str
+    first_name: str
+    last_name: str
+    nickname: str | None = None
 class UserUpdate(BaseModel):
     email: str | None
     password: str | None
@@ -13,7 +19,7 @@ class UserUpdate(BaseModel):
     nickname: str | None
 
 class UserOut(BaseModel):
-    user_id: UUID
+    user_id: str
     email: str
     first_name: str
     last_name: str
