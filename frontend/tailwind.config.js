@@ -1,13 +1,17 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
-  theme: {
-    fontFamily:{
-      'festive': ['Lobster']
-    },
-    extend: {},
+export const content = [
+  "./src/**/*.{js,jsx,ts,tsx}",
+];
+export const theme = {
+  fontFamily: {
+    'festive': ['Lobster']
   },
-  plugins: [],
-}
+  colors: {
+    'primary': '',
+    'secondary': '',
+    'accent': '',
+    'background': '',
+  },
+  extend: {},
+};
+export const plugins = [];
