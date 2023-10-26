@@ -15,7 +15,7 @@ const TestMainPage = () => {
         <h1 className="border-b-2 border-b-slate-400 mb-5">Testing GET Requests</h1>
         <GetButton
           buttonText="GET /user/thomas"
-          urlPath="/users/thomas"
+          urlPath="/user/thomas"
         />
         <GetButton buttonText="GET /" urlPath="/"/>
       </div>
@@ -23,7 +23,7 @@ const TestMainPage = () => {
         <h1 className="border-b-2 border-b-slate-400 mb-5">Testing POST Requests</h1>
         <PostButton
           buttonText="POST /user/thomas"
-          urlPath="/users/thomas"
+          urlPath="/user/thomas"
         />
         <PostButton buttonText="POST /" urlPath="/"/>
       </div>
