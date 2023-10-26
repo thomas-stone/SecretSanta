@@ -1,9 +1,15 @@
-function Landing() {
+import Header from "../components/Header"
+import Footer from "../components/Footer"
+import TestMainPage from "../components/TestMainPage";
+
+const Landing = () => {
   return (
-    <>
-      <h1>Landing Page</h1>
-    </>
+    <div className="flex flex-col h-screen justify-between">
+      <Header></Header>
+      <TestMainPage></TestMainPage>
+      <Footer></Footer>
+    </div>
   );
 }
 
-export default Landing;
+export default Landing
