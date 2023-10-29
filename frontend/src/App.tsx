@@ -3,6 +3,8 @@ import "./index.css";
 
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
+import Groups from "./pages/Groups";
+import Create from "./pages/Create";
 
 function App() {
   return (
@@ -10,6 +12,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/groups" element={<Groups />} />
+        <Route path="/create" element={<Create />} />
       </Routes>
     </Router>
   );
