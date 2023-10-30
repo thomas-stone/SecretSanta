@@ -3,6 +3,7 @@ from backend.schemas.token_schema import TokenSchema, TokenPayload
 from fastapi.security import OAuth2PasswordRequestForm
 from jose import jwt
 import boto3
+from boto3.dynamodb.conditions import Key
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from typing import Union, Any
@@ -27,8 +28,8 @@ async def login(login_data: OAuth2PasswordRequestForm = Depends()):
         raise HTTPException(status_code = 401, detail = "Invalid username or password")
 
     return {
-        "access_token": create_access_token(user.username),
-        "refresh_token": create_refresh_token(user.username)
+        "access_token": create_access_token(user['user_id']),
+        "refresh_token": create_refresh_token(user['user_id'])
     }
 
 @auth_router.post("/refresh", response_model=TokenSchema)
@@ -44,22 +45,22 @@ async def refresh_token(refresh_token: str = Body(...)):
             detail="Invalid token",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    user = await get_user(token_data.sub)
+    user = await get_user_by_id(token_data.sub)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Invalid token for user",
         )
     return {
-        "access_token": create_access_token(user.user_id),
-        "refresh_token": create_refresh_token(user.user_id),
+        "access_token": create_access_token(user['user_id']),
+        "refresh_token": create_refresh_token(user['user_id']),
     }
 
-def authenticate_user(username: str, password: str):
-    user = get_user(username)
+async def authenticate_user(username: str, password: str):
+    user = await get_user_by_email(username)
     if not user:
         return False
-    if not verify_password(password, user.password):
+    if not verify_password(password, user['password']):
         return False
     return user
 
@@ -89,6 +90,19 @@ def get_hashed_password(password: str) -> str:
 def verify_password(password: str, hashed_password: str) -> bool:
     return password_context.verify(password, hashed_password)
 
-async def get_user(user_id: str):
-    response = table.get_item(Key={"user_id": user_id})
-    return response["Item"]
+async def get_user_by_email(email: str):
+    response = table.query(
+        IndexName="email-index",
+        KeyConditionExpression=Key('email').eq(email)
+    )
+    for item in response["Items"]:
+        return item
+    return None
+
+async def get_user_by_id(user_id: str):
+    response = table.query(
+        KeyConditionExpression=Key('user_id').eq(user_id)
+    )
+    for item in response["Items"]:
+        return item
+    return None
