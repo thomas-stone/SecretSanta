@@ -18,6 +18,7 @@ import NeutralButton from "../components/NeutralButton";
 import CreateAccountForm from "../components/CreateAccountForm"
 import LoginForm from "../components/LoginForm";
 import StrongSataCard from "../components/StrongSataCard";
+import { authApi } from "../api"
 
 const Login = () => {
   const [login, setLogin] = useState(false);
@@ -26,6 +27,7 @@ const Login = () => {
 
   const handleSubmitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    //call authApi.login here() with username, password from form
     setOpenLogin(false);
     setLogin(true);
   };

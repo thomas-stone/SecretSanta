@@ -14,11 +14,29 @@
         }
       }
     },
+    "/user/me": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get Me",
+        "operationId": "getCurrentUser",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserOut" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      }
+    },
     "/user/{user_id}": {
       "get": {
         "tags": ["user"],
         "summary": "Get User",
-        "operationId": "get_user_user__user_id__get",
+        "operationId": "getUser",
         "parameters": [
           {
             "name": "user_id",
@@ -45,13 +63,79 @@
             }
           }
         }
+      },
+      "put": {
+        "tags": ["user"],
+        "summary": "Update User",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "User Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserOut" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["user"],
+        "summary": "Delete User",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "User Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
       }
     },
     "/user/": {
       "post": {
         "tags": ["user"],
         "summary": "Create User",
-        "operationId": "create_user_user__post",
+        "operationId": "createUser",
         "requestBody": {
           "content": {
             "application/json": {
@@ -79,10 +163,333 @@
           }
         }
       }
+    },
+    "/group/{group_id}": {
+      "get": {
+        "tags": ["group"],
+        "summary": "Get Group",
+        "operationId": "getGroup",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Group Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GroupOut" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["group"],
+        "summary": "Update Group",
+        "operationId": "updateGroup",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Group Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/GroupUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GroupOut" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["group"],
+        "summary": "Delete Group",
+        "operationId": "deleteGroup",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Group Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/group/": {
+      "post": {
+        "tags": ["group"],
+        "summary": "Create Group",
+        "operationId": "createGroup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Group" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GroupOut" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Login",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": { "$ref": "#/components/schemas/Body_login" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TokenSchema" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Refresh Token",
+        "operationId": "refresh",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "type": "string", "title": "Refresh Token" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TokenSchema" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "Body_login": {
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              { "type": "string", "pattern": "password" },
+              { "type": "null" }
+            ],
+            "title": "Grant Type"
+          },
+          "username": { "type": "string", "title": "Username" },
+          "password": { "type": "string", "title": "Password" },
+          "scope": { "type": "string", "title": "Scope", "default": "" },
+          "client_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": ["username", "password"],
+        "title": "Body_login"
+      },
+      "Group": {
+        "properties": {
+          "group_id": { "type": "string", "title": "Group Id" },
+          "group_name": { "type": "string", "title": "Group Name" },
+          "group_description": {
+            "type": "string",
+            "title": "Group Description"
+          },
+          "group_members": {
+            "anyOf": [
+              { "items": { "type": "string" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Group Members"
+          },
+          "group_admin": { "type": "string", "title": "Group Admin" },
+          "random_ordered_list": {
+            "anyOf": [
+              { "items": { "type": "string" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Random Ordered List"
+          }
+        },
+        "type": "object",
+        "required": ["group_name", "group_description", "group_admin"],
+        "title": "Group"
+      },
+      "GroupOut": {
+        "properties": {
+          "group_id": { "type": "string", "title": "Group Id" },
+          "group_name": { "type": "string", "title": "Group Name" },
+          "group_description": {
+            "type": "string",
+            "title": "Group Description"
+          },
+          "group_members": {
+            "anyOf": [
+              { "items": { "type": "string" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Group Members"
+          },
+          "group_admin": { "type": "string", "title": "Group Admin" },
+          "random_ordered_list": {
+            "anyOf": [
+              { "items": { "type": "string" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Random Ordered List"
+          }
+        },
+        "type": "object",
+        "required": [
+          "group_id",
+          "group_name",
+          "group_description",
+          "group_admin"
+        ],
+        "title": "GroupOut"
+      },
+      "GroupUpdate": {
+        "properties": {
+          "group_name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Group Name"
+          },
+          "group_description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Group Description"
+          },
+          "group_members": {
+            "anyOf": [
+              { "items": { "type": "string" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Group Members"
+          },
+          "group_admin": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Group Admin"
+          },
+          "random_ordered_list": {
+            "anyOf": [
+              { "items": { "type": "string" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Random Ordered List"
+          }
+        },
+        "type": "object",
+        "required": [
+          "group_name",
+          "group_description",
+          "group_members",
+          "group_admin",
+          "random_ordered_list"
+        ],
+        "title": "GroupUpdate"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -93,6 +500,15 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "TokenSchema": {
+        "properties": {
+          "access_token": { "type": "string", "title": "Access Token" },
+          "refresh_token": { "type": "string", "title": "Refresh Token" }
+        },
+        "type": "object",
+        "required": ["access_token", "refresh_token"],
+        "title": "TokenSchema"
       },
       "User": {
         "properties": {
@@ -125,6 +541,39 @@
         "required": ["user_id", "email", "first_name", "last_name", "nickname"],
         "title": "UserOut"
       },
+      "UserUpdate": {
+        "properties": {
+          "email": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Email"
+          },
+          "password": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Password"
+          },
+          "first_name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "First Name"
+          },
+          "last_name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Last Name"
+          },
+          "nickname": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Nickname"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password",
+          "first_name",
+          "last_name",
+          "nickname"
+        ],
+        "title": "UserUpdate"
+      },
       "ValidationError": {
         "properties": {
           "loc": {
@@ -138,6 +587,12 @@
         "type": "object",
         "required": ["loc", "msg", "type"],
         "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "JWT": {
+        "type": "oauth2",
+        "flows": { "password": { "scopes": {}, "tokenUrl": "/auth/login" } }
       }
     }
   }

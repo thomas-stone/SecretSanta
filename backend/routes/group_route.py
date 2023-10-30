@@ -9,19 +9,19 @@ group_router = APIRouter()
 
 table = boto3.resource("dynamodb").Table("groups")
 
-@group_router.get("/{group_id}", response_model=GroupOut)
+@group_router.get("/{group_id}", response_model=GroupOut, operation_id="getGroup")
 async def get_group(group_id: str):
     response = table.get_item(Key={"group_id": group_id})
     return response["Item"]
 
-@group_router.post("/", response_model=GroupOut)
+@group_router.post("/", response_model=GroupOut, operation_id="createGroup")
 async def create_group(group: Group):
     group_id = str(group.model_dump()["group_id"])
     group = group.model_dump() | {"group_id": group_id}
     table.put_item(Item=group)
     return group
 
-@group_router.put("/{group_id}", response_model=GroupOut)
+@group_router.put("/{group_id}", response_model=GroupOut, operation_id="updateGroup")
 async def update_group(group_id: str, group: GroupUpdate):
     group = group.model_dump()
 
@@ -44,7 +44,7 @@ async def update_group(group_id: str, group: GroupUpdate):
     group["group_id"] = group_id
     return group
 
-@group_router.delete("/{group_id}")
+@group_router.delete("/{group_id}", operation_id="deleteGroup")
 async def delete_group(group_id: str):
     table.delete_item(Key={"group_id": group_id})
     return {"message": "Group successfully deleted"}

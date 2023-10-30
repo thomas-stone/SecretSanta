@@ -21,7 +21,7 @@ REFRESH_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 
 auth_router = APIRouter()
 
-@auth_router.post("/login", response_model=TokenSchema)
+@auth_router.post("/login", response_model=TokenSchema, operation_id="login")
 async def login(login_data: OAuth2PasswordRequestForm = Depends()):
     user = await authenticate_user(username = login_data.username, password = login_data.password)
     if not user:
@@ -32,7 +32,7 @@ async def login(login_data: OAuth2PasswordRequestForm = Depends()):
         "refresh_token": create_refresh_token(user['user_id'])
     }
 
-@auth_router.post("/refresh", response_model=TokenSchema)
+@auth_router.post("/refresh", response_model=TokenSchema, operation_id="refresh")
 async def refresh_token(refresh_token: str = Body(...)):
     try:
         payload = jwt.decode(

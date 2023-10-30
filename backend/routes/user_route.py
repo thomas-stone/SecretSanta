@@ -45,16 +45,16 @@ async def get_current_user(token: str = Depends(reuseable_oauth)) -> User:
 
     return user
 
-@user_router.get("/me", response_model=UserOut)
+@user_router.get("/me", response_model=UserOut, operation_id="getCurrentUser")
 async def get_me(current_user: User = Depends(get_current_user)):
     return current_user
 
-@user_router.get("/{user_id}", response_model=UserOut)
+@user_router.get("/{user_id}", response_model=UserOut, operation_id="getUser")
 async def get_user(user_id: str):
     response = table.get_item(Key={"user_id": user_id})
     return response["Item"]
 
-@user_router.post("/", response_model=UserOut)
+@user_router.post("/", response_model=UserOut, operation_id="createUser")
 async def create_user(user: User):
     user_id = str(user.model_dump()["user_id"])
     hashed_password = get_hashed_password(user.model_dump()["password"])
@@ -66,7 +66,7 @@ async def create_user(user: User):
     table.put_item(Item=user)
     return user
 
-@user_router.put("/{user_id}", response_model=UserOut)
+@user_router.put("/{user_id}", response_model=UserOut, operation_id="updateUser")
 async def update_user(user_id: str, user: UserUpdate):
     user = user.model_dump()
 
@@ -89,7 +89,7 @@ async def update_user(user_id: str, user: UserUpdate):
     user["user_id"] = user_id  # add user_id to the returned dictionary
     return user
 
-@user_router.delete("/{user_id}")
+@user_router.delete("/{user_id}", operation_id="deleteUser")
 async def delete_user(user_id: str):
     table.delete_item(Key={"user_id": user_id})
     return {"message": "User successfully deleted"}
