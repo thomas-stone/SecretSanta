@@ -24,17 +24,24 @@ async def create_group(group: Group):
 @group_router.put("/{group_id}", response_model=GroupOut)
 async def update_group(group_id: str, group: GroupUpdate):
     group = group.model_dump()
+
+    update_expression = "SET "
+    expression_attribute_values = {}
+
+    for key, value in group.items():
+        if value is not None and value != "":
+            update_expression += f"{key} = :{key}, "
+            expression_attribute_values[f":{key}"] = value
+
+    update_expression = update_expression.rstrip(', ')
+
     table.update_item(
         Key={"group_id": group_id},
-        UpdateExpression="SET group_name = :group_name, group_description = :group_description, group_members = :group_members, group_admin = :group_admin, random_ordered_list = :random_ordered_list",
-        ExpressionAttributeValues={
-            ":group_name": group["group_name"],
-            ":group_description": group["group_description"],
-            ":group_members": group["group_members"],
-            ":group_admin": group["group_admin"],
-            ":random_ordered_list": group["random_ordered_list"]
-        }
+        UpdateExpression=update_expression,
+        ExpressionAttributeValues=expression_attribute_values
     )
+
+    group["group_id"] = group_id
     return group
 
 @group_router.delete("/{group_id}")
