@@ -10,6 +10,6 @@ const Landing = () => {
       <Footer></Footer>
     </div>
   );
-}
+};
 
-export default Landing
+export default Landing;
