@@ -14,16 +14,16 @@ const TestMainPage = () => {
       <div className={""}>
         <h1 className="border-b-2 border-b-slate-400 mb-5">Testing GET Requests</h1>
         <GetButton
-          buttonText="GET /user/thomas"
-          urlPath="/user/thomas"
+          buttonText="GET /api/user/thomas"
+          urlPath="/api/user/thomas"
         />
         <GetButton buttonText="GET /" urlPath="/"/>
       </div>
       <div className={""}>
         <h1 className="border-b-2 border-b-slate-400 mb-5">Testing POST Requests</h1>
         <PostButton
-          buttonText="POST /user/thomas"
-          urlPath="/user/thomas"
+          buttonText="POST /api/user/thomas"
+          urlPath="/api/user/thomas"
         />
         <PostButton buttonText="POST /" urlPath="/"/>
       </div>
